@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>How to Host a Static Website with Nginx</title>
+  <link rel="stylesheet" href="styles.css">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">How to Host a Static Website with Nginx</h1>
+</header>
+<p>#engl202c #writing #assignment #linux #web Due 4-6-2023</p>
+<p>[<em>Figure 1: Screenshot of Website</em>]</p>
+<h1 id="introduction">Introduction</h1>
+<h3 id="why-should-i-have-my-own-website">Why should I have my own
+website?</h3>
+<p>There are several reasons you may want a personal website; whether
+you want a blog, [[portfolio]], cv, or just a place to tell the world
+about yourself outside of traditional social media, a personal website
+is a great thing to have. Having a personal website does not require
+that you host that site yourself, and in fact most people don’t host
+hteir own sites - many services such as WordPress, Squarespace, and
+Wix.com offer people a fast, easy, and affordable way to build and host
+a website, and for most people, a service like this is probably the best
+option.</p>
+<h3 id="why-would-i-want-to-host-the-site-myself">Why would I want to
+host the site myself?</h3>
+<p>Realistically, most people probably don’t. This guide is specifically
+targeted at people who wish to better understand how the web works by
+building a small piece of it themselves, and while this route can offer
+a site that is lighter, faster, and gives you more granular control than
+those built with the management systems mentioned above, the extra
+effort probably isn’t worth it unless you have a strong desire to learn
+and tinker. For those who are willing to put in the effort, however,
+hosting your own website can be incredibly rewarding and allows you to
+build something truly unique without the limitations of hosting
+platforms.</p>
+<h3 id="what-is-a-static-website-and-why-might-i-want-one">What is a
+static website and why might I want one?</h3>
+<p>Simply put, a static website is a website with fixed content built
+using [[HTML]], [[CSS]], and possibly [[JavaScript]]. The alternative to
+a static website is a dynamic website, which is what you’re probably
+used to seeing with sites like Twitter, Google, and Netflix. These sites
+are built with web frameworks like React or Angular and dynamically
+serve content to users, which is why the content you see is different
+every time you visit one of these sites. It is important to note that
+static websites can still be responsive, cross-platform, and can even
+have dynamic elements (though that’s outside the scope of this guide).
+The reason this guide focuses on static sites, aside from their relative
+simplicity, is because they provide a strong, stable foundation on which
+to build, tinker, and ultimately deepen your understanding of the
+web.</p>
+<h3 id="what-should-i-already-know">What should I already know?</h3>
+<p>This guide assumes that you have no experience with the tools and
+platforms used. With that in mind, you should be very comfortable using
+a computer, and you mustn’t fear the [[command line]] - it is a powerful
+tool that makes everything in this guide possible. Because this guide
+focuses on [[hosting]] rather than designing a website, there won’t be
+an explanation of how to build your website with HTML and CSS; that
+said, there will be links to external resources for that at the end of
+the guide.</p>
+<h3 id="how-long-will-this-take">How long will this take?</h3>
+<p>Due to the nature of wireless networking, wait times between certain
+steps can be unpredictable. You should expect to spend about two to
+three hours getting your site set up (less if you’re already familiar
+with the tools), and many more hours tinkering and troubleshooting as
+you expand your site into whatever you want it to be.</p>
+<p>[[Sentence Definitions]] ### Important Technologies &amp; Terminology
+- <strong>[[HTTP]]</strong> (Hypertext Transfer Protocol) - HTTP is an
+internet protocol that delivers websites to web browsers. -
+<strong>[[SSH]]</strong> (Secure Shell Protocol) - SSH is a networking
+protocol that allows users to access a server remotely. -
+<strong>VPS</strong> (virtual private server) - A VPS is a cloud server
+accessible remotely that can run the software required to host a
+website. - <strong>[[DigitalOcean]]</strong> - DigitalOcean is a cloud
+service provider that offers virtual private servers (called droplets)
+for a monthly fee. There are many alternatives available, including
+Linode and OrangeWebsite. - <strong>[[Nginx]]</strong> (pronounced
+engine-x) - Nginx is a HTTP server, or a piece of software that delivers
+a website to a visitor’s browser. - <strong>[[Linux]]</strong> - Linux
+is an operating system that is used to run most web servers. -
+<strong>[[Bash]]</strong> - Bash is a command line interpreter that is
+used to execute instructions in Linux. - <strong>[[HTML]]</strong>
+(HyperText Markup Language) - HTML is a markup language used to create
+documents meant for the web. - <strong>[[CSS]]</strong> (Cascading Style
+Sheets) - CSS is a style language used to layout the visual design of
+HTML documents. - <strong>[[JavaScript]]</strong> - JavaScript is a
+scripting language that runs in web browsers and is used to make
+websites more dynamic. - <strong>Domain Name</strong> - A domain name is
+a unique identifier for a website that allows it to be easily accessed
+via a web browser. (E.g., example.com, wikipedia.org) -
+<strong>Subdomain</strong> - A subdomain is a string of text preceding a
+website’s main domain name. (E.g., <strong>www</strong>.example.com,
+<strong>en</strong>.wikipedia.org) - <strong>DNS</strong> (Domain Name
+System) - DNS is the naming system that manages domain names and links
+them to web servers. - <strong>Symbolic Link</strong> - A symbolic link
+is a file that points to a different file or directory, similar to
+shortcuts in Windows. - <strong>TLS</strong> (Transport Layer Security)
+- TLS is a security protocol that encrypts data sent to websites to
+protect user privacy. - <strong>Certbot</strong> - Certbot is a
+command-line tool created by the Electronic Frontier Foundation to
+simplify the process of setting up TLS for a website.</p>
+<h3 id="warning">Warning!</h3>
+<p>This guide makes heavy use of bash, and specifically the sudo
+command, which allows the user to run commands with elevated privileges.
+When following any guide involving bash it is essential that you
+carefully check any command involving sudo before executing, as this
+command allows you to do significant damage to your system if used
+improperly.</p>
+<h3 id="caution">Caution</h3>
+<p>While this guide will follow basic security practices, there are many
+security risks that come with hosting a website. You should never upload
+anything to the web server that you wouldn’t want publicly visible, and
+you shouldn’t attempt to handle user data without significant further
+research.</p>
+<h3 id="overview">Overview</h3>
+<p>These instructions will involve the following actions: 1. Set up ssh
+on your device 2. Sign up for DigitalOcean and create a droplet 3.
+Install web hosting software on server 4. Set up a domain name for your
+site 5. Configure website on server 6. Set up TLS 7. Upload Custom
+Website files</p>
+<h3 id="what-youll-need">What You’ll Need</h3>
+<p>The only things you’ll need to get started are a computer connected
+to the internet and about $15. This guide will primarily target Windows
+users, but everything here is possible on nearly any modern operating
+system. Over the course of this guide, you’ll have to pay about $5 per
+month for a server, and about $10 per year for a domain name.</p>
+<h1 id="steps">Steps</h1>
+<p>[[Instruction Steps]] ## SSH Setup 1. Open command line. - Open the
+command line for your operating system. To do this on Windows, right
+click the start menu and click the “Windows PowerShell” option
+(<em>Figure 2</em>). - <strong>Note</strong>: You should
+<strong>not</strong> choose the option that says “Admin”, since admin
+privileges are unnecessary here - You should see the window in
+<em>Figure 3</em> once the command line opens - [<em>Figure 2: Windows
+start options menu</em>] -&gt; [<em>Figure 3: Windows PowerShell</em>]
+2. Generate SSH keys for authentication. 1. Type or copy/paste the
+following command in your command prompt. <code>ssh-keygen -t rsa</code>
+2. Press enter to run the command. 3. Press enter at each prompt,
+leaving the passphrase empty - <strong>Note</strong>: You can set a
+passphrase if you’d like, but this is unnecessary and not common
+practice. - You should see text that looks like the following when
+you’re done:
+<code>Generating public/private rsa key pair.           Enter file in which to save the key (C:\Users\username/.ssh/id_rsa):           Enter passphrase (empty for no passphrase):           Enter same passphrase again:           Your identification has been saved in C:\Users\username/.ssh/id_rsa.           Your public key has been saved in C:\Users\username/.ssh/id_rsa.pub.           The key fingerprint is:           SHA256:GlK2Lb83XgTkk0PY40aFNtHY59gUFCQ6RfDDAB/OxKk username@hostname           The key&#39;s randomart image is:           +---[RSA 3072]----+           |        .=O@=o=o |           |        .O@Oo.o  |           |      o  =%o+*   |           |     o oE o=..o  |           |    . + S.  .    |           |     . =   .     |           |      . .   .    |           |         .o.     |           |        .o..     |           +----[SHA256]-----+</code></p>
+<h2 id="server-creation">Server Creation</h2>
+<ol type="1">
+<li>Sign up for DigitalOcean.
+<ol type="1">
+<li>Go to www.digitalocean.com</li>
+<li>Click “Sign Up”</li>
+<li>Follow the site’s instructions to create your account.
+<ul>
+<li><strong>Note</strong>: You will be required to enter payment
+information and choose a project name</li>
+<li>Once your account has been created, you should see the Dashboard in
+<em>Figure 4</em>.</li>
+<li>[<em>Figure 4: DigitalOcean dashboard</em>]</li>
+</ul></li>
+</ol></li>
+<li>Set up a droplet.
+<ul>
+<li>[<em>Figure 5: Droplet creation drop-down</em>]</li>
+</ul>
+<ol type="1">
+<li>Click the green <em>Create</em> button on the top right of the
+dashboard (see <em>Figure 5</em>).</li>
+<li>Click <em>Droplets</em> in the drop-down menu that appears.</li>
+<li>Choose options for your droplet based on the following guidelines:
+<ul>
+<li><strong>Region</strong>: Choose the region closest to you for ideal
+performance.</li>
+<li><strong>Datacenter</strong>: Leave this as the default choice.</li>
+<li><strong>Image</strong>: Leave this set to Ubuntu unless you’re
+already familiar with Linux and wish to use a different
+distribution.</li>
+<li><strong>Version</strong>: Leave this as the default choice.</li>
+<li><strong>Droplet Type</strong>: Choose the <em>Basic</em> option
+under <em>Shared CPU</em></li>
+<li><strong>CPU Options</strong>: Choose <em>Regular</em>, click the
+left arrow below, and select the $4 per month option. You can upgrade
+this later if necessary.</li>
+</ul></li>
+</ol></li>
+<li>Add an SSH key to the droplet.
+<ol type="1">
+<li>Select <em>SSH Key</em> under the <em>Choose Authentication
+Method</em> section.</li>
+<li>Run the following command in your terminal to display the text of
+your SSH key: <code>cat ~/.ssh/id_rsa.pub</code>
+<ul>
+<li>The output should be a string of text starting with <em>ssh-rsa</em>
+and ending with <em>username@hostname</em>.</li>
+</ul></li>
+<li>Copy the full output of the previous command and paste it into the
+<em>SSH key content</em> box in DigitalOcean (<em>Figure 5</em>).</li>
+<li>Choose a name for your key and type it in the <em>Name</em>
+box.</li>
+<li>Click <em>Add SSH Key</em></li>
+<li>Make sure the key you just added has a check mark next to it under
+<em>Choose your SSH Keys</em></li>
+</ol>
+<ul>
+<li>[<em>Figure 6: SSH dialog box</em>]</li>
+</ul></li>
+<li>Create the droplet.
+<ol type="1">
+<li>Choose a short, descriptive name for your droplet and type it in the
+<em>Hostname</em> box at the bottom of the page.</li>
+<li>Click the <em>Create Droplet</em> button at the bottom of the
+screen.
+<ul>
+<li>You should be returned to the dashboard, where you will see your
+droplet being created (<em>Figure 7</em>)</li>
+<li>[<em>Figure 7: Newly created droplet in DigitalOcean
+dashboard</em>]</li>
+</ul></li>
+</ol></li>
+</ol>
+<h2 id="server-setup">Server Setup</h2>
+<ol type="1">
+<li>Connect to the server.
+<ul>
+<li><strong>Note</strong>: Next to the name of your droplet will be an
+IP address (E.g., 192.168.1.1). If this doesn’t appear automatically,
+you may need to refresh the page. For the rest of this guide, you should
+replace the text [ip-address] with your server’s IP address in any
+commands or text files.</li>
+</ul>
+<ol type="1">
+<li>Connect to the droplet by running the following command, replacing
+[ip-address] with your droplet’s IP address.
+<ul>
+<li><code>ssh root@[ip-address]</code></li>
+<li>You should see a prompt that says
+<code>Are you sure you want to continue connecting(yes/no/fingerprint)?</code></li>
+</ul></li>
+<li>Type <code>yes</code> at the prompt and press enter.
+<ul>
+<li>The following output should appear:</li>
+</ul>
+<pre><code>Welcome to Ubuntu 22.10 (GNU/Linux 5.19.0-23-generic x86_64)
+
+ * Documentation: https://help.ubuntu.com  
+ * Management: https://landscape.canonical.com  
+ * Support: https://ubuntu.com/advantage
+
+  System information as of Tue Mar 28 05:09:53 UTC 2023
+
+  System load: 0.0 Users logged in: 0  
+  Usage of /: 17.1% of 9.52GB IPv4 address for eth0: 67.205.134.168  
+  Memory usage: 38% IPv4 address for eth0: 10.10.0.6  
+  Swap usage: 0% IPv4 address for eth1: 10.136.0.2  
+  Processes: 90
+
+0 updates can be applied immediately.  
+
+
+
+The programs included with the Ubuntu system are free software;  
+the exact distribution terms for each program are described in the  
+individual files in /usr/share/doc/*/copyright.  
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by  
+applicable law.</code></pre></li>
+</ol></li>
+<li>Set up user account.
+<ol type="1">
+<li>Choose a username that only contains lowercase letters, with no
+spaces or special characters.
+<ul>
+<li><strong>Note</strong>: For the rest of this guide, replace
+[username] with the name you chose.</li>
+</ul></li>
+<li>Run the following command to create a user.
+<ul>
+<li><code>adduser username</code></li>
+</ul></li>
+<li>Type a strong, memorable password when prompted
+<ul>
+<li><strong>Note</strong>: There will be no visible indication when
+typing your password</li>
+</ul></li>
+<li>Press enter at each prompt for personal information.
+<ul>
+<li>A prompt should appear that says
+<code>Is the information correct?</code></li>
+</ul></li>
+<li>Type <code>y</code> and press enter.
+<ul>
+<li>If the command was successful, there will be no further output.</li>
+</ul></li>
+<li>Run the following command to give the user admin privileges.
+<ul>
+<li><code>usermod -aG sudo [username]</code></li>
+<li>There should be no output.</li>
+</ul></li>
+<li>Allow remote access to the user by running the following command.
+<ul>
+<li><code>rsync --archive --chown=[username]:[username] ~/.ssh /home/[username]</code></li>
+<li>Again, you should see no output.</li>
+</ul></li>
+</ol></li>
+<li>Connect to server with user account.
+<ol type="1">
+<li>Run the command <code>exit</code> to disconnect from the
+server.</li>
+<li>Run the following command to reconnect.
+<ul>
+<li><code>ssh [username]@[ip-address]</code></li>
+<li><strong>Note</strong>: This is the command you should use any time
+you connect to the server in the future.</li>
+</ul></li>
+</ol></li>
+<li>Install Nginx.
+<ol type="1">
+<li>Run the following command to update the server’s package list.
+<ul>
+<li><code>sudo apt update</code></li>
+<li>After some time, you should see output that looks like the
+following:</li>
+</ul>
+<pre><code>Fetched 1672 kB in 4s (441 kB/s)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+33 packages can be upgraded. Run &#39;apt list --upgradable&#39; to see them.</code></pre></li>
+<li>Install Nginx with the following command.
+<ul>
+<li><code>sudo apt install nginx</code></li>
+<li>A prompt should appear that says
+<code>Do you want to continue? [Y/n]</code></li>
+</ul></li>
+<li>Type <code>y</code> and press enter.
+<ul>
+<li>The server will take some time to install, and output will vary
+depending on your system.</li>
+</ul></li>
+</ol></li>
+<li>Test Nginx.
+<ul>
+<li>Paste your server’s IP address into the address bar of your web
+browser.
+<ul>
+<li>If your server has been set up properly, you should see the page
+shown in <em>Figure 8</em>.</li>
+</ul></li>
+</ul></li>
+</ol>
+<h2 id="domain-name-setup">Domain Name Setup</h2>
+<ol type="1">
+<li>Purchase a domain name.
+<ol type="1">
+<li>Navigate to a domain name registrar - this guide will focus on
+www.namecheap.com.</li>
+<li>Search for a domain name of your choosing in the search bar.
+<ul>
+<li><strong>Note</strong>: You may need to try several names before you
+find one that is available.</li>
+<li><strong>Note</strong>: For the rest of this guide, [mydomain] will
+refer to your chosen domain name.</li>
+</ul></li>
+<li>Go through the site’s checkout process, entering payment information
+and creating an account as necessary.
+<ul>
+<li><strong>Note</strong>: You don’t need to purchase any add-ons, but
+it’s a good idea to keep <em>Domain Privacy</em> enabled when checking
+out.</li>
+</ul></li>
+<li>Click the <em>Manage</em> button next to your domain name to go to
+the control panel (<em>Figure 9</em>).</li>
+</ol>
+<ul>
+<li>[<em>Figure 9: Namecheap domain control panel</em>]</li>
+</ul></li>
+<li>Connect domain name to server.
+<ol type="1">
+<li>Click <em>Advanced DNS</em> in the top right of the control
+panel.</li>
+<li>Click <em>ADD NEW RECORD</em> under <em>HOST RECORDS</em>.</li>
+<li>Under <em>Type</em> make sure <em>A Record</em> is selected.</li>
+<li>In the <em>Host</em> box enter the @ symbol to make a website with
+no subdomain.</li>
+<li>Paste the IP address of your DigitalOcean droplet in the <em>IP
+Address</em> box.</li>
+<li>Click the green check mark on the right to save the DNS record
+(<em>Figure 10</em>).</li>
+<li>Click <em>ADD NEW RECORD</em> again.</li>
+<li>Select <em>A Record</em>.</li>
+<li>Type <em>www</em> in the <em>Host</em> box.</li>
+<li>Paste the same address as before in the <em>IP Address</em>
+box.</li>
+<li>Click the green check mark again to save.</li>
+</ol>
+<ul>
+<li>[<em>Figure 10: Namecheap DNS settings</em>]</li>
+</ul></li>
+</ol>
+<h2 id="website-configuration">Website Configuration</h2>
+<ol type="1">
+<li>Create website files on server.
+<ol type="1">
+<li>Run the following command to create a directory for your website.
+<ul>
+<li><code>sudo mkdir -p /var/www/[mydomain]/html</code></li>
+</ul></li>
+<li>Grant your user ownership of the directory with the following
+command.
+<ul>
+<li><code>sudo chown -R $USER:$USER /var/www/[mydomain]/html</code></li>
+</ul></li>
+<li>Run the following command to create an empty html document using the
+text editor <em>nano</em>.
+<ul>
+<li><code>sudo nano /var/www/[mydomain]/html/index.html</code></li>
+</ul></li>
+<li>Enter the following sample html into the document, or create your
+own.
+<code>html      &lt;html&gt;          &lt;head&gt;              &lt;title&gt;My Personal Website&lt;/title&gt;          &lt;/head&gt;          &lt;body&gt;              &lt;h1&gt;My website is working.&lt;/h1&gt;          &lt;/body&gt;      &lt;/html&gt;</code></li>
+<li>Press <code>Ctrl+x</code> to exit.</li>
+<li>Press y to save the file.</li>
+<li>Press enter to keep the default filename.</li>
+</ol></li>
+<li>Setup Nginx configuration.
+<ol type="1">
+<li><p>Create and open a configuration file with the following
+command.</p>
+<ul>
+<li><code>sudo nano /etc/nginx/sites-available/[mydomain]</code></li>
+</ul></li>
+<li><p>Enter the following text in the file, making sure to replace
+[mydomain] with your domain name. ``` server { listen 80; listen
+[::]:80;</p>
+<pre><code> root /var/www/[mydomain]/html;
+ index index.html index.htm;
+
+ server_name [mydomain] www.[mydomain];
+
+ location / {
+     try_files $uri $uri/ =404;
+ }</code></pre>
+<p>} ```</p></li>
+<li><p>Run the following command to create a symbolic link that enables
+your website.</p>
+<ul>
+<li><code>sudo ln -s /etc/nginx/sites-available/[mydomain] /etc/nginx/sites-enabled/</code></li>
+</ul></li>
+<li><p>Disable the default website for Nginx with the following
+command:</p>
+<ul>
+<li><code>sudo rm /etc/nginx/sites-enabled/default</code></li>
+</ul></li>
+<li><p>Test your Nginx configuration for errors with the following
+command.</p>
+<ul>
+<li><code>sudo nginx -t</code></li>
+<li>If there are no errors, you should see the following output:</li>
+</ul>
+<pre><code>nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful</code></pre>
+<ul>
+<li><strong>Note</strong>: If you do see errors, you’ll have to open the
+previous file again and fix the mistakes mentioned in the command
+output.</li>
+</ul></li>
+<li><p>Restart Nginx with the following command.</p>
+<ul>
+<li><code>sudo systemctl restart nginx</code></li>
+<li>There will be no output if the command runs successfully.</li>
+</ul></li>
+<li><p>Type your domain name in the address bar of your web browser.</p>
+<ul>
+<li>You should see the page shown in <em>Figure 11</em>, with some
+differences if you made your own html earlier.</li>
+</ul></li>
+</ol>
+<ul>
+<li>[<em>Figure 11: Custom website</em>]</li>
+</ul></li>
+</ol>
+<h2 id="tls-setup">TLS Setup</h2>
+<ol type="1">
+<li>Install Certbot
+<ol type="1">
+<li>Run the following command to ensure the package installer
+<em>snapd</em> is up to date.
+<ul>
+<li><code>sudo snap install core; sudo snap refresh core</code></li>
+<li>When the installation is done, you should see the following
+output.</li>
+</ul>
+<pre><code>core 16-2.58.3 from Canonical✓ installed
+snap &quot;core&quot; has no updates available</code></pre></li>
+<li>Install Certbot using snapd with the following command:
+<ul>
+<li><code>sudo snap install --classic certbot</code></li>
+<li>The output of the command should read
+<code>certbot 2.4.0 from Certbot Project (certbot-eff✓) installed</code></li>
+</ul></li>
+<li>Create a symbolic link for Certbot with the following command:
+<ul>
+<li><code>sudo ln -s /snap/bin/certbot /usr/bin/certbot</code></li>
+</ul></li>
+</ol></li>
+<li>Run Certbot.
+<ol type="1">
+<li>Use the following command to run Certbot:
+<ul>
+<li><code>sudo certbot --nginx</code></li>
+</ul></li>
+<li>Enter your email address when prompted</li>
+<li>Enter <code>y</code> to agree to Certbot’s terms of service.</li>
+<li>Enter either <code>y</code> for yes or <code>n</code> for no when
+asked whether to share your email with the EFF.</li>
+<li>Press enter to activate HTTPS for your domain.
+<ul>
+<li>You should see the following line in your output:</li>
+<li><code>Congratulations! You have successfully enabled HTTPS on https://[mydomain] and https://www.[mydomain]</code></li>
+</ul></li>
+</ol></li>
+<li>Test HTTPS.
+<ul>
+<li>navigate to https://[mydomain] in your browser.
+<ul>
+<li>You should see a lock symbol next to your website name indicating
+that the site is secure (<em>Figure 12</em>)</li>
+</ul></li>
+<li>[<em>Figure 12</em>]</li>
+</ul></li>
+</ol>
+<h2 id="website-customization">Website Customization</h2>
+<ul>
+<li><strong>Note</strong>: While designing a website is outside the
+scope of this guide, once you do make a website you’ll have to upload
+the files to your server. There are resources linked at the end of this
+guide to help you design your website, and you can come back to this
+section whenever you have files you need to upload.</li>
+</ul>
+<ol type="1">
+<li>(On Windows) Open Windows file explorer.</li>
+<li>Navigate to folder with your website files.</li>
+<li>Click the title bar to select the directory where your files are
+located (<em>Figure 13</em>).</li>
+</ol>
+<ul>
+<li>[<em>Figure 13</em>]</li>
+</ul>
+<ol start="4" type="1">
+<li>Copy the directory to your clipboard.</li>
+<li>Run the following command to copy the files to the server, replacing
+[directory] with the directory you copied.
+<ul>
+<li><code>scp [directory]/* [username]@[ip-address]:/var/www/[mydomain]/html/</code></li>
+<li><strong>Note</strong>: Any files already on the server with the same
+name as files you upload will be overwritten.</li>
+<li><strong>Note</strong>: The first page users see when they visit your
+website will always be the file titled <code>index.html</code></li>
+<li>If you go to your website in a web browser, you should see the
+changes you made. If they don’t appear right away, you may need to find
+instructions to clear the cache of whatever browser you’re using.</li>
+</ul></li>
+</ol>
+<h1 id="conclusion">Conclusion</h1>
+<p>Now that you have a basic website set up, you’ll probably want to
+update and modify your site over time; a few commands are provided below
+to help you with simple tasks, and there is a list of external resources
+and tutorials that will help you customize your website and maintain
+your server. If you’ve completed everything up to this point, you’re
+finally ready to carve out your own space on the internet and share a
+piece of yourself with the world. Best of luck! ## Maintenance
+Cheatsheet - Here is a list of helpful commands for server upkeep. -
+Connect to server: <code>ssh [username]@[ip-address]</code> - Update
+server: <code>sudo apt update</code> then <code>sudo apt upgrade</code>
+- Upload files to website:
+<code>scp [filename] [username]@[ip-address]:/var/www/[mydomain]/html/</code>
+## External Resources - www.w3schools.com - This site has extensive
+tutorials on how to build a website with HTML, CSS, and JavaScript, as
+well as other general web and programming tutorials. -
+https://www.w3schools.com/html/default.asp - HTML tutorial. -
+https://www.w3schools.com/css/default.asp - CSS tutorial. -
+https://www.w3schools.com/js/default.asp - JavaScript tutorial. -
+https://www.w3schools.com/git/default.asp - A good tool for managing
+versions of your site is Git - this page is a good tutorial on the
+topic. - www.digitalocean.com/community/tutorials - DigitalOcean has a
+large library of tutorials about managing their droplets and other
+features. A few tutorials relevant to this guide include: -
+https://www.digitalocean.com/community/tutorial_series/getting-started-with-linux
+- This page has a collection of general Linux tutorials. Getting a good
+understanding of Linux will make maintaining your server much easier. -
+https://www.digitalocean.com/community/tutorials/how-to-keep-ubuntu-20-04-servers-updated
+- This guide goes into depth about keeping your server updated. -
+https://www.digitalocean.com/community/tutorials/nginx-essentials-installation-and-configuration-troubleshooting
+- This guide provides a lot of information about configuring and
+troubleshooting Nginx.</p>
+</body>
+</html>
