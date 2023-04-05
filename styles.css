@@ -91,23 +91,27 @@ blockquote {
     color: #606060;
 }
 
+/*
 code {
     font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
     font-size: 85%;
     margin: 0;
     hyphens: manual;
 }
+*/
 
 pre {
     margin: 1em 0;
     overflow: auto;
 }
 
+/*
 pre code {
     padding: 0;
     overflow: visible;
     overflow-wrap: normal;
 }
+*/
 
 .sourceCode {
     background-color: transparent;
@@ -207,4 +211,45 @@ header li {
 
 .italic {
     font-style: italic;
+}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.smallcolumn {
+    float:left;
+    width: 40%;
+    padding: 0;
+}
+
+.bigcolumn {
+    float:left;
+    width: 60%;
+    padding: 0;
+}
+
+.column {
+    float:left;
+    width: 50%;
+    padding:0;
+}
+
+code {
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-left: 3px solid #f36d33;
+    color: #666;
+    page-break-inside: avoid;
+    font-family: monospace;
+    font-size: 1em;
+    line-height: 1.6;
+    margin-bottom: 1.2em;
+    max-width: 100%;
+    overflow: auto;
+    padding: 1em 1.5em;
+    display: block;
+    word-wrap: break-word;    
 }
