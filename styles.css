@@ -323,3 +323,18 @@ p.feedback {
     padding-top: 0;
     padding-bottom: 0;
 }
+
+ol { counter-reset: item; }
+ol li { 
+    display: block;
+    text-indent: -1em;
+}
+ol li::before {
+    content: counters(item, ".") ". ";
+    counter-increment: item;
+    font-weight: bold;
+}
+
+ol ul li::before {
+    content: "• "
+}
