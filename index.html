@@ -463,6 +463,83 @@ Reading state information... Done
         </ol>
       </ol>
       <h2><li>Nginx Configuration</li></h2>
+      <ol>
+        <h3><li>Create sample website file on server.</li></h3>
+        <ol>
+          <li>Run the following command to create a directory for your website.</li>
+          <code>sudo mkdir -p /var/www/[mydomain]/html</code>
+          <li>Grant your user ownership of the directory with the following command.</li>
+          <code>sudo chown -R $USER:$USER /var/www/[mydomain]/html</code>
+          <li>Run the following command to create an empty html document using the text editor <em>nano</em>.</li>
+          <code>sudo nano /var/www/[mydomain]/html/index.html</code>
+          <li>Enter the sample html from <em>Listing 4</em> into the document, or create your own.</li>
+          <figure>
+            <code>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title>My Personal Website&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;My website is working.&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+            </code>
+            <figcaption>Listing 4: Simple html file</figcaption>
+          </figure>
+        </ol>
+        <h3><li>Setup Nginx configuration.</li></h3>
+        <ol>
+          <li>Create and open a configuration file with the following command.</li>
+          <code>sudo nano /etc/nginx/sites-available/[mydomain]</code>
+          <li>Enter the text from <em>Listing 5</em> into the file, making sure to replace [mydomain] with your domain name.</li>
+          <figure>
+            <code>
+server {
+  listen 80;
+  listen [::]:80;
+
+  root /var/www/[mydomain]/html;
+  index index.html index.htm;
+
+  server_name [mydomain] www.[mydomain];
+
+  location / {
+    try_files $uri $uri/ =404;
+  }
+}
+            </code>
+            <figcaption>Listing 5: Nginx configuration file</figcaption>
+          </figure>
+          <li>Run the following command to create a symbolic link that enables your website.</li>
+          <code>sudo ln -s /etc/nginx/sites-available/[mydomain] /etc/nginx/sites-enabled/</code>
+          <li>Disable the Nginx default page with the following command.</li>
+          <code>sudo rm /etc/nginx/sites-enabled/default</code>
+          <li>Test your Nginx configuration for errors with the following command.</li>
+          <code>sudo nginx -t</code>
+          <p class="feedback">If there are no errors, you should see the output in <em>Listing 6</em>.</p>
+          <figure>
+            <code>
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+            </code>
+            <figcaption>Listing 6: nginx test output</figcaption>
+          </figure>
+          <p class="note">
+            <strong>Note</strong>: If you do see errors, you'll have to open the previous file again and fix whatever mistakes the command output mentions.
+          </p>
+          <li>Restart Nginx with the following command.</li>
+          <code>sudo systemctl restart nginx</code>
+          <p class="feedback">
+            There will be no output if the command runs successfully.
+          </p>
+          <li>Type your domain name in the address bar of your web browser.</li>
+          <p class="feedback">You should see the page shown in <em>Figure 11</em>, with some differences if you made your own html earlier.</p>
+          <figure>
+            <img src="images/fig11_basicWebsite.png">
+            <figcaption>Figure 11: Basic custom website</figcaption>
+          </figure>
+        </ol>
+      </ol>
       <h2><li>TLS Setup</li></h2>
       <h2><li>Website File Upload</li></h2>
     </ol>
