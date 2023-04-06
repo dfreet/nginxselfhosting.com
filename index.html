@@ -318,6 +318,109 @@ The key's randomart image is:
         </ol>
       </ol>
       <h2><li>Server Setup</li></h2>
+      <ol>
+        <h3><li>Connect to the server.</li></h3>
+        <ol>
+          <p class="note">
+            <strong>Note</strong>: Next to the name of your droplet is an IP address (E.g., 192.168.1.1). 
+            If this doesn't appear automatically, you may need to refresh the page.  For the rest of this guide, you 
+            should replace the text [ip-address] with your server's IP address in any commands or text files.
+          </p>
+          <li>Connect to the droplet by running the following command, replacing [ip-address] with your droplet's IP address.</li>
+          <code>ssh root@[ip-address]</code>
+          <p class="feedback">You should see a prompt that says <em>Are you sure you want to continue connecting(yes/no/fingerprint)?</em></p>
+          <li>Type <em>yes</em> at the prompt and press enter.</li>
+          <p class="feedback">The output shown in <em>Listing 2</em> should appear.</p>
+          <figure>
+          <code>
+Welcome to Ubuntu 22.10 (GNU/Linux 5.19.0-23-generic x86_64)
+
+ * Documentation: https://help.ubuntu.com  
+ * Management: https://landscape.canonical.com  
+ * Support: https://ubuntu.com/advantage
+
+  System information as of Tue Mar 28 05:09:53 UTC 2023
+
+  System load: 0.0 Users logged in: 0  
+  Usage of /: 17.1% of 9.52GB IPv4 address for eth0: 67.205.134.168  
+  Memory usage: 38% IPv4 address for eth0: 10.10.0.6  
+  Swap usage: 0% IPv4 address for eth1: 10.136.0.2  
+  Processes: 90
+
+0 updates can be applied immediately.  
+
+
+
+The programs included with the Ubuntu system are free software;  
+the exact distribution terms for each program are described in the  
+individual files in /usr/share/doc/*/copyright.  
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by  
+applicable law.
+          </code>
+          <figcaption>Listing 2: Server connection text</figcaption>
+          </figure>
+        </ol>
+        <h3><li>Set up a user account.</li></h3>
+        <ol>
+          <li>Choose a username containing only letters, with no spaces or special characters.</li>
+          <p class="note">
+            <strong>Note</strong>: For the rest of this guide, replace [username] with the name you chose.
+          </p>
+          <li>Run the following command to create a user.</li>
+          <code>adduser [username]</code>
+          <li>Type a strong, memorable password when prompted.</li>
+          <p class="note">
+            <strong>Note</strong>: There will be no visible indication when typing your password.
+          </p>
+          <li>Press enter at each prompt for personal information.</li>
+          <p class="feedback">A prompt should appear that says <em>Is the information correct?</em></p>
+          <li>Type <em>y</em> and press enter.</li>
+          <p class="feedback">If the command was successful, there will be no further output.</p>
+          <li>Run the following command to give the user admin privileges.</li>
+          <code>usermod -aG sudo [username]</code>
+          <p class="feedback">There should be no output.</p>
+          <li>Allow remote access to the user by running the following command.</li>
+          <code>rsync --archive --chown=[username]:[username] ~/.ssh/home/[username]</code>
+          <p class="feedback">Again, you should see no output.</p>
+        </ol>
+        <h3><li>Reconnect to the server with your user account.</li></h3>
+        <ol>
+          <li>Run the command <em>exit</em> to disconnect from the server.</li>
+          <li>Run the following command to reconnect as the user account.</li>
+          <code>ssh [username]@[ip-address]</code>
+          <p class="note"><strong>Note</strong>: This is the command you should use any time you need to connect in the future.</p>
+        </ol>
+        <h3><li>Install Nginx.</li></h3>
+        <ol>
+          <li>Run the following command to update the server's package list.</li>
+          <code>sudo apt update</code>
+          <p class="feedback">After some time, you should see output that looks like <em>Listing 3</em></p>
+          <figure>
+            <code>
+Fetched 1672 kB in 4s (441 kB/s)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+33 packages can be upgraded. Run 'apt list --upgradable' to see them.
+            </code>
+            <figcaption>Listing 3: apt update output</figcaption>
+          </figure>
+          <li>Install Nginx with the following command.</li>
+          <code>sudo apt install nginx</code>
+          <p class="feedback">
+            A prompt should appear that says <em>Do you want to continue? [Y/n]</em>.
+          </p>
+          <li>Type <em>y</em> and press enter.</li>
+          <p class="feedback">The server will take some time to install, and output will vary depending on your system.</p>
+        </ol>
+        <h3><li>Test Nginx.</li></h3>
+        <p>Paste your server's IP address into the address bar of your web browser.</p>
+        <p class="feedback">If your server has been set up properly, you should see the page shown in <em>Figure 8</em>.</p>
+        <figure>
+          <img src="images/fig8_nginxHomepage.png">
+          <figcaption>Figure 8: Nginx initial setup page</figcaption>
+        </figure>
+      </ol>
       <h2><li>Domain Name Setup</li></h2>
       <h2><li>Nginx Configuration</li></h2>
       <h2><li>TLS Setup</li></h2>
