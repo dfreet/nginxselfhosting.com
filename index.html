@@ -587,6 +587,44 @@ snap "core" has no updates available
         </figure>
       </ol>
       <h2><li>Website File Upload</li></h2>
+      <p class="note">
+        <strong>Note</strong>: While designing a website is outside the scope of this guide, once you do make a website you'll have to upload the 
+        files to your server. There are resources linked at the end of this guide to help you design your website, and you can come back to this 
+        section whenever you have files you need to upload.
+      </p>
+      <ol>
+        <h3><li>Get the file directory.</li></h3>
+        <ol>
+          <li>(<em>On Windows</em>) Open Windows file explorer.</li>
+          <li>Navigate to the folder with your website files.</li>
+          <li>Click the title bar the select the directory wehre your files are located (<em>Figure 13</em>).</li>
+          <li>Copy the directory to your clipboard.</li>
+          <figure>
+            <img src="images/fig13_fileDirectory.png">
+            <figcaption>Figure 13: File directory in Windows</figcaption>
+          </figure>
+        </ol>
+        <h3><li>Copy the files to the server.</li></h3>
+        <ol>
+          <li>Run the following command to copy your files to the server, replacing [directory] with the directory you copied.</li>
+          <code>scp [directory] [username]@[ip-address]:~/sitefiles</code>
+          <li>Connect to your server, using the same command as before.</li>
+          <code>ssh [username]@[ip-address]</code>
+          <li>Copy the files you uploaded to your website folder with the following command.</li>
+          <code>sudo cp ~/sitefiles/* /var/www/[mydomain]/html/</code>
+          <p class="note">
+            <strong>Note</strong>: Any files already on the server with the same name as files you upload will be overwritten.
+          </p>
+          <p class="note">
+            <strong>Note</strong>: The first page users see when they visit your website will always be the file titled <em>index.html</em>.
+          </p>
+          <p>
+            You should see the changes you made when you visit your site in a web browser. If they don't appear right away, you may need to find 
+            instructions on how to clear the cache of whatever browser you're using, as old versions of a site can sometimes stay cached in your 
+            browser.
+          </p>
+        </ol>
+      </ol>
     </ol>
     <h1>Conclustion</h1>
   </body>
