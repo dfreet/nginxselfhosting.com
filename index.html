@@ -174,12 +174,12 @@
     <h1>Steps</h1>
     <ol id="steps">
       <h2><li>SSH Setup</li></h2>
-      <ol>
+      <ol id="step1">
         <h3><li>Open a command line.</li></h3>
         <p>
           Open the command line for your operating system. To do this on Windows, 
           right click the start menu and click the <em>Windows PowerShell</em> 
-          option (<em>Figure 2</em> below).
+          option (<em>Figure 2</em>).
         </p>
         <p class="note">
           <strong>Note</strong>: You should <strong>not</strong> 
@@ -192,13 +192,13 @@
         <div class="row">
           <div class="smallcolumn">
             <figure>
-              <img src="images/fig2_startOptions.png" alt="Windows start options menu">
+              <img src="images/fig2_startOptions.png">
               <figcaption>Figure 2: Windows start options menu</figcaption>
             </figure>
           </div>
           <div class="bigcolumn">
             <figure>
-              <img src="images/fig3_powershell.png" alt="Windows PowerShell">
+              <img src="images/fig3_powershell.png">
               <figcaption>Figure 3: Windows PowerShell</figcaption>
             </figure>
           </div>
@@ -244,6 +244,79 @@ The key's randomart image is:
         </ol>
       </ol>
       <h2><li>Server Creation</li></h2>
+      <ol id="step2">
+        <h3><li>Sign up for DigitalOcean</li></h3>
+        <ol>
+          <li>Go to <a href="https://www.digitalocean.com" target="_blank" rel="noopener noreferrer">
+            digitalocean.com</a>.</li>
+          <li>Click <em>Sign Up</em>.</li>
+          <li>Follow the site's instructions to create your account.</li>
+          <p class="note">
+            <strong>Note</strong>: You will be required to enter payment information 
+            and choose a project name.
+          </p>
+          <p class="feedback">
+            Once your account has been created, you should see the dashboard in 
+            <em>Figure 4</em>.
+          </p>
+          <figure>
+            <img src="images/fig4_digitaloceanDash.png">
+            <figcaption>Figure 4: DigitalOcean dashboard</figcaption>
+          </figure>
+        </ol>
+        <h3><li>Set up a droplet.</li></h3>
+        <div class="row">
+          <div class="column">
+            <ol>
+              <li>Click the green <em>Create</em> button on the top right of the 
+              dashboard (see <em>Figure 5</em>).</li>
+              <li>Click <em>Droplets</em> in the drop-down menu that appears.</li>
+              <li>Choose options for your droplet based on the following guidelines:</li>
+              <ul>
+                <li><strong>Region</strong>: Choose the region closest to you for ideal performance</li>
+                <li><strong>Datacenter</strong>: Leave this as the default choice</li>
+                <li><strong>Image</strong>: Leave this set to Ubuntu unless you're already familiar with Linux and want a different distribution.</li>
+                <li><strong>Version</strong>: Leave this as the default choice.</li>
+                <li><strong>Droplet Type</strong>: Choose the <em>Basic</em> option under <em>Shared CPU</em></li>
+                <li><strong>CPU Options</strong>: Choose <em>Regular</em>, click the left arrow below, and select the $4 per month option.</li>
+              </ul>
+            </ol>
+          </div>
+          <div class="column">
+            <figure>
+              <img src="images/fig5_dropletCreate.png">
+              <figcaption>Figure 5: Create droplet button</figcaption>
+            </figure>
+          </div>
+        </div>
+        <h3><li>Add an SSH key to the droplet.</li></h3>
+        <ol>
+          <li>Select <em>SSH Key</em> under the <em>Choose Authentication Method</em> section.</li>
+          <li>Run the following command in your terminal to display the text of your SSH key.</li>
+          <code>cat ~/.ssh/id_rsa.pub</code>
+          <p class="feedback">
+            The output should be a string of text starting with <em>ssh-rsa</em> and ending with <em>username@hostname</em>.
+          </p>
+          <li>Copy the full output of the previous command and paste it into the <em>SSH key content</em> box in DigitalOcean (<em>Figure 6</em>).</li>
+          <li>Choose a name for your key and type it in the <em>Name</em> box.</li>
+          <li>Click <em>Add SSH Key</em></li>
+          <li>Make sure the key you just added has a checkmark next to it under <em>Choose your SSH Keys</em>.</li>
+          <figure>
+            <img src="images/fig6_sshDialog.png">
+            <figcaption>Figure 6: SSH dialog box</figcaption>
+          </figure>
+        </ol>
+        <h3><li>Create the droplet.</li></h3>
+        <ol>
+          <li>Choose a short, descriptive name for your droplet and type it in the <em>Hostname</em> box at the bottom of the page.</li>
+          <li>Click the <em>Create Droplet</em> button at the bottom of the screen.</li>
+          <p>You should be returned to the dashboard, where you will see your droplet being created (<em>Figure 7</em>).</p>
+          <figure>
+            <img src="images/fig7_newDroplet.png">
+            <figcaption>Figure 7: Newly created droplet in dashboard</figcaption>
+          </figure>
+        </ol>
+      </ol>
       <h2><li>Server Setup</li></h2>
       <h2><li>Domain Name Setup</li></h2>
       <h2><li>Nginx Configuration</li></h2>

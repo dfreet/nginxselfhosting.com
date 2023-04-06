@@ -58,6 +58,10 @@ a:visited {
 }
 
 img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0.5em;
     border: 2px solid black;
     max-width: 100%;
 }
@@ -240,8 +244,8 @@ header li {
 code {
     background: #f0f0f0;
     border: 1px solid #ddd;
-    border-left: 3px solid #f36d33;
-    color: #666;
+    border-left: 3px solid #636d93;
+    color: #444;
     page-break-inside: avoid;
     font-family: monospace;
     font-size: 1em;
@@ -252,4 +256,8 @@ code {
     padding: 1em 1.5em;
     display: block;
     word-wrap: break-word;    
+}
+
+li {
+    margin-bottom: 0.5em;
 }
