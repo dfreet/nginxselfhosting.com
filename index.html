@@ -422,6 +422,46 @@ Reading state information... Done
         </figure>
       </ol>
       <h2><li>Domain Name Setup</li></h2>
+      <ol>
+        <h3><li>Purchase a domain name.</li></h3>
+        <ol>
+          <li>Navigate to a domain name registrar - this guide will focus on <a href=https://www.namecheap.com>namecheap.com</a></li>
+          <li>Search for a domain name of your choosing in the search bar.</li>
+          <p class="note">
+            <strong>Note</strong>: You may need to try several names before you find one that is available.
+          </p>
+          <p class="note">
+            <strong>Note</strong>: For the rest of this guide, [mydomain] will refer to your chosen domain name.
+          </p>
+          <li>Go through the site's checkout process, entering payment information and creating an account as necessary.</li>
+          <p class="note">
+            <strong>Note</strong>: You don't need to purchase any add-ons, but it's a good idea to keep <em>Domain Privacy</em> enabled when checking out.
+          </p>
+          <li>Click the <em>Manage</em> button next to your domain name to go to the control panel (<em>Figure 9</em>).</li>
+          <figure>
+            <img src="images/fig9_namecheapControlPanel.png">
+            <figcaption>Figure 9: Namecheap domain control panel.</figcaption>
+          </figure>
+        </ol>
+        <h3><li>Connnect your domain name to the server.</li></h3>
+        <ol>
+          <li>Click <em>Advanced DNS</em> in the top right of the control panel.</li>
+          <li>Click <em>ADD NEW RECORD</em> under <em>HOST RECORDS</em>.</li>
+          <li>Under <em>Type</em> make sure <em>A Record</em> is selected.</li>
+          <li>In the <em>Host</em> box enter the @ symbol to make your site accessible with no subdomain.</li>
+          <li>Paste the IP address of your DigitalOcean droplet in the <em>IP Address</em> box.</li>
+          <li>Click the green checkmark on the right to save the DNS record (<em>Figure 10</em>).</li>
+          <li>Click <em>ADD NEW RECORD</em> again.</li>
+          <li>Select <em>A Record</em>.</li>
+          <li>Type <em>www</em> in the <em>Host</em> box.</li>
+          <li>Paste the saem address as before in the <em>IP Address</em> box.</li>
+          <li>Click the green checkmark to save.</li>
+          <figure>
+            <img src="images/fig10_dnsRecord.png">
+            <figcaption>Figure 10: Namecheap DNS settings</figcaption>
+          </figure>
+        </ol>
+      </ol>
       <h2><li>Nginx Configuration</li></h2>
       <h2><li>TLS Setup</li></h2>
       <h2><li>Website File Upload</li></h2>
