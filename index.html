@@ -9,14 +9,6 @@
     <title>How to Host a Static Website with Nginx</title>
     <link rel="stylesheet" href="styles.css">
   </head>
-  <!--
-    TODO:
-    feedback formatting
-    backlinks
-    figure label formatting
-    un-numbered substep formatting?
-    list numbering (1.1.1, 1.1.2, ..., 3.4.2, etc..)?
-  -->
   <body>
     <header id="title-block-header">
       <h1 class="title">How to Host a Static Website with Nginx</h1>
@@ -78,7 +70,7 @@
       everything in this guide possible. Because this guide focuses on hosting 
       rather than designing a website, there won't be an explanation of how to 
       build your website with HTML and CSS; that said, there will be links to 
-      external resources for that at the end of the guide.
+      <a href="#resources">external resources</a> for that at the end of the guide.
     </p>
     <h3 class="italic">How long will this take?</h3>
     <p>
@@ -171,13 +163,13 @@
     <p>
       These instructions will involve the following actions: 
       <ol>
-        <li>Set up ssh on your device.</li>
-        <li>Sign up for DigitalOcean and create a droplet.</li>
-        <li>Install web hosting software on your server.</li>
-        <li>Set up a domain name for your website.</li>
-        <li>Configure Nginx for domain name.</li>
-        <li>Set up TLS.</li>
-        <li>Upload custom website files to server.</li>
+        <li><a href="#step1">Set up ssh on your device.</a></li>
+        <li><a href="#step2">Sign up for DigitalOcean and create a droplet.</a></li>
+        <li><a href="#step3">Install web hosting software on your server.</a></li>
+        <li><a href="#step4">Set up a domain name for your website.</a></li>
+        <li><a href="#step5">Configure Nginx for domain name.</a></li>
+        <li><a href="#step6">Set up TLS.</a></li>
+        <li><a href="#step7">Upload custom website files to server.</a></li>
       </ol>
     <h3 id="what-youll-need">What You'll Need</h3>
     <p>
@@ -189,8 +181,8 @@
     </p>
     <h1>Steps</h1>
     <ol id="steps">
-      <h2><li>SSH Setup</li></h2>
-      <ol id="step1">
+      <h2 id="step1"><li>SSH Setup</li></h2>
+      <ol>
         <h3><li>Open a command line.</li></h3>
         <p>
           Open the command line for your operating system. To do this on Windows, 
@@ -226,8 +218,8 @@
             <code>ssh-keygen -t rsa</code>
             <figcaption><strong>Command 1</strong>: Generate ssh key</figcaption>
           </figure>
-          <li>Press enter to run the command.</li>
-          <li>Press enter at each prompt, leaving the passphrase empty.</li>
+          <li>Press <strong>Enter</strong> to run the command.</li>
+          <li>Press <strong>Enter</strong> at each prompt, leaving the passphrase empty.</li>
           <p class="note">
             <strong>Note</strong>: You may set a passhprase if you'd like, but 
             setting a passphrase is unnecessary and not common practice.
@@ -262,8 +254,8 @@ The key's randomart image is:
           </figure>
         </ol>
       </ol>
-      <h2><li>Server Creation</li></h2>
-      <ol id="step2">
+      <h2 id="step2"><li>Server Creation</li></h2>
+      <ol>
         <h3><li>Sign up for DigitalOcean.</li></h3>
         <ol>
           <li>Go to <a href="https://www.digitalocean.com" target="_blank" rel="noopener noreferrer">
@@ -332,14 +324,14 @@ The key's randomart image is:
         <ol>
           <li>Choose a short, descriptive name for your droplet and type it in the <em>Hostname</em> box at the bottom of the page.</li>
           <li>Click the <em>Create Droplet</em> button at the bottom of the screen.</li>
-          <p>You should be returned to the dashboard, where you will see your droplet being created (<em>Figure 7</em>).</p>
+          <p class="feedback">You should be returned to the dashboard, where you will see your droplet being created (<em>Figure 7</em>).</p>
           <figure>
             <img src="images/fig7_newDroplet.png">
             <figcaption><strong>Figure 7</strong>: Newly created droplet in dashboard</figcaption>
           </figure>
         </ol>
       </ol>
-      <h2><li>Server Setup</li></h2>
+      <h2 id="step3"><li>Server Setup</li></h2>
       <ol>
         <h3><li>Connect to the server.</li></h3>
         <ol>
@@ -354,7 +346,7 @@ The key's randomart image is:
             <figcaption><strong>Command 3</strong>: Connect to server via ssh</figcaption>
           </figure>
           <p class="feedback">You should see a prompt that says <em>Are you sure you want to continue connecting(yes/no/fingerprint)?</em></p>
-          <li>Type <em>yes</em> at the prompt and press enter.</li>
+          <li>Type <strong>yes</strong> at the prompt and press <strong>Enter</strong>.</li>
           <p class="feedback">The output shown in <em>Listing 2</em> should appear.</p>
           <figure class="listing">
             <code>
@@ -400,9 +392,9 @@ applicable law.
           <p class="note">
             <strong>Note</strong>: There will be no visible indication when typing your password.
           </p>
-          <li>Press enter at each prompt for personal information.</li>
+          <li>Press <strong>Enter</strong> at each prompt for personal information.</li>
           <p class="feedback">A prompt should appear that says <em>Is the information correct?</em></p>
-          <li>Type <em>y</em> and press enter.</li>
+          <li>Type <strong>y</strong> and press <strong>Enter</strong>.</li>
           <p class="feedback">If the command was successful, there will be no further output.</p>
           <li>Run <em>Command 5</em> to give the user admin privileges.</li>
           <figure class="command">
@@ -460,7 +452,7 @@ Reading state information... Done
           <p class="feedback">
             A prompt should appear that says <em>Do you want to continue? [Y/n]</em>.
           </p>
-          <li>Type <em>y</em> and press enter.</li>
+          <li>Type <strong>y</strong> and press <strong>Enter</strong>.</li>
           <p class="feedback">The server will take some time to install, and output will vary depending on your system.</p>
         </ol>
         <h3><li>Test Nginx.</li></h3>
@@ -471,7 +463,7 @@ Reading state information... Done
           <figcaption><strong>Figure 8</strong>: Nginx initial setup page</figcaption>
         </figure>
       </ol>
-      <h2><li>Domain Name Setup</li></h2>
+      <h2 id="step4"><li>Domain Name Setup</li></h2>
       <ol>
         <h3><li>Purchase a domain name.</li></h3>
         <ol>
@@ -512,7 +504,7 @@ Reading state information... Done
           </figure>
         </ol>
       </ol>
-      <h2><li>Nginx Configuration</li></h2>
+      <h2 id="step5"><li>Nginx Configuration</li></h2>
       <ol>
         <h3><li>Create a sample website file on the server.</li></h3>
         <ol>
@@ -545,6 +537,9 @@ Reading state information... Done
             </code>
             <figcaption><strong>Listing 4</strong>: Simple html file</figcaption>
           </figure>
+          <li>Press <strong>Ctrl+X</strong> to exit.</li>
+          <li>Press <strong>y</strong> to save the file.</li>
+          <li>Press <strong>Enter</strong> to keep the default filename.</li>
         </ol>
         <h3><li>Setup the configuration file for Nginx.</li></h3>
         <ol>
@@ -614,7 +609,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
           </figure>
         </ol>
       </ol>
-      <h2><li>TLS Setup</li></h2>
+      <h2 id="step6"><li>TLS Setup</li></h2>
       <ol>
         <h3><li>Install Certbot.</li></h3>
         <ol>
@@ -657,9 +652,9 @@ certbot 2.4.0 from Certbot Project (certbot-eff✓) installed
             <figcaption><strong>Command 21</strong>: Run Certbot</figcaption>
           </figure>
           <li>Enter your email address when prompted.</li>
-          <li>Enter <em>y</em> to agree to Certbot's terms of service.</li>
-          <li>Enter either <em>y</em> for yes or <em>n</em> for no when asked whether you want to share your email with the EFF.</li>
-          <li>Press enter to activate HTTPS for your domain.</li>
+          <li>Enter <strong>y</strong> to agree to Certbot's terms of service.</li>
+          <li>Enter either <strong>y</strong> for yes or <strong>n</strong> for no when asked whether you want to share your email with the EFF.</li>
+          <li>Press <strong>Enter</strong> to activate HTTPS for your domain.</li>
           <p class="feedback">Your output should look like <em>Listing 9</em></p>
           <figure class="listing">
             <code>
@@ -676,7 +671,7 @@ Congratulations! You have successfully enabled HTTPS on https://[mydomain] and h
           <figcaption><strong>Figure 12</strong>: HTTPS lock symbol</figcaption>
         </figure>
       </ol>
-      <h2><li>Website File Upload</li></h2>
+      <h2 id="step7"><li>Website File Upload</li></h2>
       <div class="caution">
         <h3>Caution</h3>
         <p>Remember: Don't upload anything to the server that shouldn't be publicly visible. There are many avenues for security breaches, 
@@ -685,8 +680,8 @@ Congratulations! You have successfully enabled HTTPS on https://[mydomain] and h
       </div>
       <p class="note">
         <strong>Note</strong>: While designing a website is outside the scope of this guide, once you do make a website you'll have to upload the 
-        files to your server. There are resources linked at the end of this guide to help you design your website, and you can come back to this 
-        section whenever you have files you need to upload.
+        files to your server. There are resources linked <a href="#resources">at the end of this guide</a> to help you design your website, and you 
+        can come back to this section whenever you have files you need to upload.
       </p>
       <ol>
         <h3><li>Get the file directory.</li></h3>
@@ -734,14 +729,14 @@ Congratulations! You have successfully enabled HTTPS on https://[mydomain] and h
         </ol>
       </ol>
     </ol>
-    <h1>Conclusion</h1>
+    <h1 id="conclusion">Conclusion</h1>
     <p>
       Now that you have a basic website set up, you'll probably want to update and modify things over time; a few commands are provided below 
       to help you with simple tasks, and there is a list of external resources and tutorials that will help you customize your website and maintain 
       your server. If you've completed everything up to this point, you're finally ready to carve out your own space on the internet and share a 
       piece of yourself with the world. Best of luck!
     </p>
-    <h2>Maintenance Cheatsheet</h2>
+    <h2 id="maintenance">Maintenance Cheatsheet</h2>
     <p>Here is a list of helpful commands for server upkeep.</p>
     <ul>
       <li>
@@ -763,7 +758,7 @@ Congratulations! You have successfully enabled HTTPS on https://[mydomain] and h
         </figure>
       </li>
     </ul>
-    <h2>External Resources</h2>
+    <h2 id="resources">External Resources</h2>
     <ul>
       <li><a href="https://www.w3schools.com" target="_blank" rel="noopener noreferrer">w3schools.com</a> - this site has extensive tutorials on how to build a website with HTML,
         CSS, and JavaScript, as well as other general web and programmign tutorials.
