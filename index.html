@@ -9,6 +9,14 @@
     <title>How to Host a Static Website with Nginx</title>
     <link rel="stylesheet" href="styles.css">
   </head>
+  <!--
+    TODO:
+    feedback formatting
+    backlinks
+    figure label formatting
+    un-numbered substep formatting?
+    list numbering (1.1.1, 1.1.2, ..., 3.4.2, etc..)?
+  -->
   <body>
     <header id="title-block-header">
       <h1 class="title">How to Host a Static Website with Nginx</h1>
@@ -21,7 +29,7 @@
     </header>
     <figure>
       <img src="images/fig1_website.png" alt="website screenshot">
-      <figcaption>Figure 1: Screenshot of website</figcaption>
+      <figcaption><strong>Figure 1</strong>: Screenshot of website</figcaption>
     </figure>
     <h1 id="introduction">Introduction</h1>
     <h3 class="italic">Why should I have my own website?</h3>
@@ -136,21 +144,29 @@
         for a website.
       </li>
     </ul>
-    <h3 id="warning">Warning!</h3>
-    <p>
-      This guide makes heavy use of bash, and specifically the sudo command, which 
-      allows the user to run commands with elevated privileges. When following any 
-      guide involving bash it is essential that you carefully check any command 
-      involving sudo before executing, as this command allows you to do significant 
-      damage to your system if used improperly.
-    </p>
-    <h3 id="caution">Caution</h3>
-    <p>
-      While this guide will follow basic security practices, there are many 
-      security risks that come with hosting a website. You should never upload 
-      anything to the web server that you wouldn't want publicly visible, and you 
-      shouldn't attempt to handle user data without significant further research.
-    </p>
+    <div class="warning">
+      <h3>Warning!</h3>
+      <p>
+        This guide makes heavy use of bash, and specifically the <strong>sudo</strong> command, which 
+        allows the user to run commands with elevated privileges. Always carefullly proofread 
+        any command starting with <strong>sudo</strong> before executing, since the <strong>sudo</strong> command 
+        allows you to do significant damage to your system if you make a mistake.
+      </p>
+    </div>
+    <div class="caution">
+      <h3>Caution</h3>
+      <p>
+        While this guide will follow basic security practices, there are many 
+        security risks that come with hosting a website. Keep the following guidelines 
+        in mind in order to minimize the potential harm of a security breach:
+      </p>
+      <ul>
+        <li>Don't upload anything to the web server that shouldn't be publibly visible.</li>
+        <li>Don't attempt to handle sensitive user data (such as login information) without 
+          significant further research.
+        </li>
+      </ul>
+    </div>
     <h3 id="overview">Overview</h3>
     <p>
       These instructions will involve the following actions: 
@@ -193,20 +209,23 @@
           <div class="smallcolumn">
             <figure>
               <img src="images/fig2_startOptions.png">
-              <figcaption>Figure 2: Windows start options menu</figcaption>
+              <figcaption><strong>Figure 2</strong>: Windows start options menu</figcaption>
             </figure>
           </div>
           <div class="bigcolumn">
             <figure>
               <img src="images/fig3_powershell.png">
-              <figcaption>Figure 3: Windows PowerShell</figcaption>
+              <figcaption><strong>Figure 3</strong>: Windows PowerShell</figcaption>
             </figure>
           </div>
         </div>
-        <h3><li>Generate SSH keys for authentication.</li></h3>
+        <h3><li>Generate SSH key for authentication.</li></h3>
         <ol>
-          <li>Type or copy/paste the following command in your command prompt</li>
-          <code>ssh-keygen -t rsa</code>
+          <li>Type or copy/paste the text of <em>Command 1</em> in your command prompt</li>
+          <figure class="command">
+            <code>ssh-keygen -t rsa</code>
+            <figcaption><strong>Command 1</strong>: Generate ssh key</figcaption>
+          </figure>
           <li>Press enter to run the command.</li>
           <li>Press enter at each prompt, leaving the passphrase empty.</li>
           <p class="note">
@@ -216,7 +235,7 @@
           <p class="feedback">
             See <em>Listing 1</em> for an example of how the output should look.
           </p>
-          <figure>
+          <figure class="listing">
             <code>
 Generating public/private rsa key pair.  
 Enter file in which to save the key (C:\Users\username/.ssh/id_rsa):  
@@ -239,13 +258,13 @@ The key's randomart image is:
 |        .o..     |  
 +----[SHA256]-----+
             </code>
-            <figcaption>Listing 1: ssh-keygen output</figcaption>
+            <figcaption><strong>Listing 1</strong>: Output for ssh-keygen</figcaption>
           </figure>
         </ol>
       </ol>
       <h2><li>Server Creation</li></h2>
       <ol id="step2">
-        <h3><li>Sign up for DigitalOcean</li></h3>
+        <h3><li>Sign up for DigitalOcean.</li></h3>
         <ol>
           <li>Go to <a href="https://www.digitalocean.com" target="_blank" rel="noopener noreferrer">
             digitalocean.com</a>.</li>
@@ -261,7 +280,7 @@ The key's randomart image is:
           </p>
           <figure>
             <img src="images/fig4_digitaloceanDash.png">
-            <figcaption>Figure 4: DigitalOcean dashboard</figcaption>
+            <figcaption><strong>Figure 4</strong>: DigitalOcean dashboard</figcaption>
           </figure>
         </ol>
         <h3><li>Set up a droplet.</li></h3>
@@ -285,15 +304,18 @@ The key's randomart image is:
           <div class="column">
             <figure>
               <img src="images/fig5_dropletCreate.png">
-              <figcaption>Figure 5: Create droplet button</figcaption>
+              <figcaption><strong>Figure 5:</strong> Create droplet button</figcaption>
             </figure>
           </div>
         </div>
         <h3><li>Add an SSH key to the droplet.</li></h3>
         <ol>
           <li>Select <em>SSH Key</em> under the <em>Choose Authentication Method</em> section.</li>
-          <li>Run the following command in your terminal to display the text of your SSH key.</li>
-          <code>cat ~/.ssh/id_rsa.pub</code>
+          <li>Run <em>Command 2</em> in your terminal to display the text of your SSH key.</li>
+          <figure class="command">
+            <code>cat ~/.ssh/id_rsa.pub</code>
+            <figcaption><strong>Command 2:</strong> Display SSH key</figcaption>
+          </figure>
           <p class="feedback">
             The output should be a string of text starting with <em>ssh-rsa</em> and ending with <em>username@hostname</em>.
           </p>
@@ -303,7 +325,7 @@ The key's randomart image is:
           <li>Make sure the key you just added has a checkmark next to it under <em>Choose your SSH Keys</em>.</li>
           <figure>
             <img src="images/fig6_sshDialog.png">
-            <figcaption>Figure 6: SSH dialog box</figcaption>
+            <figcaption><strong>Figure 6</strong>: SSH dialog box</figcaption>
           </figure>
         </ol>
         <h3><li>Create the droplet.</li></h3>
@@ -313,7 +335,7 @@ The key's randomart image is:
           <p>You should be returned to the dashboard, where you will see your droplet being created (<em>Figure 7</em>).</p>
           <figure>
             <img src="images/fig7_newDroplet.png">
-            <figcaption>Figure 7: Newly created droplet in dashboard</figcaption>
+            <figcaption><strong>Figure 7</strong>: Newly created droplet in dashboard</figcaption>
           </figure>
         </ol>
       </ol>
@@ -326,13 +348,16 @@ The key's randomart image is:
             If this doesn't appear automatically, you may need to refresh the page.  For the rest of this guide, you 
             should replace the text [ip-address] with your server's IP address in any commands or text files.
           </p>
-          <li>Connect to the droplet by running the following command, replacing [ip-address] with your droplet's IP address.</li>
-          <code>ssh root@[ip-address]</code>
+          <li>Connect to the droplet by running <em>Command 3</em>, replacing [ip-address] with your droplet's IP address.</li>
+          <figure class="command">
+            <code>ssh root@[ip-address]</code>
+            <figcaption><strong>Command 3</strong>: Connect to server via ssh</figcaption>
+          </figure>
           <p class="feedback">You should see a prompt that says <em>Are you sure you want to continue connecting(yes/no/fingerprint)?</em></p>
           <li>Type <em>yes</em> at the prompt and press enter.</li>
           <p class="feedback">The output shown in <em>Listing 2</em> should appear.</p>
-          <figure>
-          <code>
+          <figure class="listing">
+            <code>
 Welcome to Ubuntu 22.10 (GNU/Linux 5.19.0-23-generic x86_64)
 
  * Documentation: https://help.ubuntu.com  
@@ -356,8 +381,8 @@ the exact distribution terms for each program are described in the
 individual files in /usr/share/doc/*/copyright.  
 Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by  
 applicable law.
-          </code>
-          <figcaption>Listing 2: Server connection text</figcaption>
+            </code>
+            <figcaption><strong>Listing 2</strong>: Server connection text</figcaption>
           </figure>
         </ol>
         <h3><li>Set up a user account.</li></h3>
@@ -366,8 +391,11 @@ applicable law.
           <p class="note">
             <strong>Note</strong>: For the rest of this guide, replace [username] with the name you chose.
           </p>
-          <li>Run the following command to create a user.</li>
-          <code>adduser [username]</code>
+          <li>Run the <em>Command 4</em> to create a user.</li>
+          <figure class="command">
+            <code>adduser [username]</code>
+            <figcaption><strong>Command 4</strong>: Create a new user</figcaption>
+          </figure>
           <li>Type a strong, memorable password when prompted.</li>
           <p class="note">
             <strong>Note</strong>: There will be no visible indication when typing your password.
@@ -376,26 +404,45 @@ applicable law.
           <p class="feedback">A prompt should appear that says <em>Is the information correct?</em></p>
           <li>Type <em>y</em> and press enter.</li>
           <p class="feedback">If the command was successful, there will be no further output.</p>
-          <li>Run the following command to give the user admin privileges.</li>
-          <code>usermod -aG sudo [username]</code>
+          <li>Run <em>Command 5</em> to give the user admin privileges.</li>
+          <figure class="command">
+            <code>usermod -aG sudo [username]</code>
+            <figcaption><strong>Command 5</strong>: Add user to group sudo</figcaption>
+          </figure>
           <p class="feedback">There should be no output.</p>
-          <li>Allow remote access to the user by running the following command.</li>
-          <code>rsync --archive --chown=[username]:[username] ~/.ssh/home/[username]</code>
+          <li>Allow remote access to the user by running <em>Command 6</em>.</li>
+          <figure class="command">
+            <code>rsync --archive --chown=[username]:[username] ~/.ssh/home/[username]</code>
+            <figcaption><strong>Command 6</strong>: Allow user to connect via ssh</figcaption>
+          </figure>
           <p class="feedback">Again, you should see no output.</p>
         </ol>
         <h3><li>Reconnect to the server with your user account.</li></h3>
         <ol>
-          <li>Run the command <em>exit</em> to disconnect from the server.</li>
-          <li>Run the following command to reconnect as the user account.</li>
-          <code>ssh [username]@[ip-address]</code>
+          <li>Run the command <strong>exit</strong> to disconnect from the server.</li>
+          <li>Run <em>Command 7</em> to reconnect as the user account.</li>
+          <figure class="command">
+            <code>ssh [username]@[ip-address]</code>
+            <figcaption><strong>Command 7</strong>: Connect to server as user account via ssh</figcaption>
+          </figure>
           <p class="note"><strong>Note</strong>: This is the command you should use any time you need to connect in the future.</p>
         </ol>
         <h3><li>Install Nginx.</li></h3>
         <ol>
-          <li>Run the following command to update the server's package list.</li>
-          <code>sudo apt update</code>
+          <div class="warning">
+            <h3>Warning!</h3>
+            <p>
+              Remember to always carefully proofread commands starting with <strong>sudo</strong> before you run them; 
+              the sudo command allows you to do significant damage to your system if you aren't careful.
+            </p>
+          </div>
+          <li>Run <em>Command 8</em> to update the server's package list.</li>
+          <figure class="command">
+            <code>sudo apt update</code>
+            <figcaption><strong>Command 8</strong>: Update package list</figcaption>
+          </figure>
           <p class="feedback">After some time, you should see output that looks like <em>Listing 3</em></p>
-          <figure>
+          <figure class="listing">
             <code>
 Fetched 1672 kB in 4s (441 kB/s)
 Reading package lists... Done
@@ -403,10 +450,13 @@ Building dependency tree... Done
 Reading state information... Done
 33 packages can be upgraded. Run 'apt list --upgradable' to see them.
             </code>
-            <figcaption>Listing 3: apt update output</figcaption>
+            <figcaption><strong>Listing 3</strong>: Output for apt update</figcaption>
           </figure>
-          <li>Install Nginx with the following command.</li>
-          <code>sudo apt install nginx</code>
+          <li>Install Nginx with <em>Command 9</em>.</li>
+          <figure class="command">
+            <code>sudo apt install nginx</code>
+            <figcaption><strong>Command 9</strong>: Install Nginx</figcaption>
+          </figure>
           <p class="feedback">
             A prompt should appear that says <em>Do you want to continue? [Y/n]</em>.
           </p>
@@ -418,14 +468,14 @@ Reading state information... Done
         <p class="feedback">If your server has been set up properly, you should see the page shown in <em>Figure 8</em>.</p>
         <figure>
           <img src="images/fig8_nginxHomepage.png">
-          <figcaption>Figure 8: Nginx initial setup page</figcaption>
+          <figcaption><strong>Figure 8</strong>: Nginx initial setup page</figcaption>
         </figure>
       </ol>
       <h2><li>Domain Name Setup</li></h2>
       <ol>
         <h3><li>Purchase a domain name.</li></h3>
         <ol>
-          <li>Navigate to a domain name registrar - this guide will focus on <a href=https://www.namecheap.com>namecheap.com</a></li>
+          <li>Navigate to a domain name registrar - this guide will focus on <a href=https://www.namecheap.com target="_blank" rel="noopener noreferrer">namecheap.com</a></li>
           <li>Search for a domain name of your choosing in the search bar.</li>
           <p class="note">
             <strong>Note</strong>: You may need to try several names before you find one that is available.
@@ -440,7 +490,7 @@ Reading state information... Done
           <li>Click the <em>Manage</em> button next to your domain name to go to the control panel (<em>Figure 9</em>).</li>
           <figure>
             <img src="images/fig9_namecheapControlPanel.png">
-            <figcaption>Figure 9: Namecheap domain control panel.</figcaption>
+            <figcaption><strong>Figure 9</strong>: Namecheap domain control panel.</figcaption>
           </figure>
         </ol>
         <h3><li>Connnect your domain name to the server.</li></h3>
@@ -458,22 +508,31 @@ Reading state information... Done
           <li>Click the green checkmark to save.</li>
           <figure>
             <img src="images/fig10_dnsRecord.png">
-            <figcaption>Figure 10: Namecheap DNS settings</figcaption>
+            <figcaption><strong>Figure 10</strong>: Namecheap DNS settings</figcaption>
           </figure>
         </ol>
       </ol>
       <h2><li>Nginx Configuration</li></h2>
       <ol>
-        <h3><li>Create sample website file on server.</li></h3>
+        <h3><li>Create a sample website file on the server.</li></h3>
         <ol>
-          <li>Run the following command to create a directory for your website.</li>
-          <code>sudo mkdir -p /var/www/[mydomain]/html</code>
-          <li>Grant your user ownership of the directory with the following command.</li>
-          <code>sudo chown -R $USER:$USER /var/www/[mydomain]/html</code>
-          <li>Run the following command to create an empty html document using the text editor <em>nano</em>.</li>
-          <code>sudo nano /var/www/[mydomain]/html/index.html</code>
+          <li>Run <em>Command 10</em> to create a directory for your website.</li>
+          <figure class="command">
+            <code>sudo mkdir -p /var/www/[mydomain]/html</code>
+            <figcaption><strong>Command 10</strong>: Create website directory</figcaption>
+          </figure>
+          <li>Grant your user ownership of the directory with <em>Command 11</em>.</li>
+          <figure class="command">
+            <code>sudo chown -R $USER:$USER /var/www/[mydomain]/html</code>
+            <figcaption><strong>Command 11</strong>: Take ownership of website directory</figcaption>
+          </figure>
+          <li>Run <em>Command 12</em> to create an empty html document using the text editor <em>nano</em>.</li>
+          <figure class="command">
+            <code>sudo nano /var/www/[mydomain]/html/index.html</code>
+            <figcaption><strong>Command 12</strong>: Open new website file with nano</figcaption>
+          </figure>
           <li>Enter the sample html from <em>Listing 4</em> into the document, or create your own.</li>
-          <figure>
+          <figure class="listing">
             <code>
 &lt;html&gt;
   &lt;head&gt;
@@ -484,15 +543,18 @@ Reading state information... Done
   &lt;/body&gt;
 &lt;/html&gt;
             </code>
-            <figcaption>Listing 4: Simple html file</figcaption>
+            <figcaption><strong>Listing 4</strong>: Simple html file</figcaption>
           </figure>
         </ol>
-        <h3><li>Setup Nginx configuration.</li></h3>
+        <h3><li>Setup the configuration file for Nginx.</li></h3>
         <ol>
-          <li>Create and open a configuration file with the following command.</li>
-          <code>sudo nano /etc/nginx/sites-available/[mydomain]</code>
+        <li>Create and open a configuration file with <em>Command 13</em>.</li>
+          <figure class="command">
+            <code>sudo nano /etc/nginx/sites-available/[mydomain]</code>
+            <figcaption><strong>Command 13</strong>: Open new configuration file with nano</figcaption>
+          </figure>
           <li>Enter the text from <em>Listing 5</em> into the file, making sure to replace [mydomain] with your domain name.</li>
-          <figure>
+          <figure class="listing">
             <code>
 server {
   listen 80;
@@ -508,27 +570,39 @@ server {
   }
 }
             </code>
-            <figcaption>Listing 5: Nginx configuration file</figcaption>
+            <figcaption><strong>Listing 5</strong>: Nginx configuration file</figcaption>
           </figure>
-          <li>Run the following command to create a symbolic link that enables your website.</li>
-          <code>sudo ln -s /etc/nginx/sites-available/[mydomain] /etc/nginx/sites-enabled/</code>
-          <li>Disable the Nginx default page with the following command.</li>
-          <code>sudo rm /etc/nginx/sites-enabled/default</code>
-          <li>Test your Nginx configuration for errors with the following command.</li>
-          <code>sudo nginx -t</code>
+          <li>Run <em>Command 14</em> to create a symbolic link that enables your website.</li>
+          <figure class="command">
+            <code>sudo ln -s /etc/nginx/sites-available/[mydomain] /etc/nginx/sites-enabled/</code>
+            <figcaption><strong>Command 14</strong>: Create symbolic link</figcaption>
+          </figure>
+          <li>Disable the Nginx default page with <em>Command 15</em>.</li>
+          <figure class="command">
+            <code>sudo rm /etc/nginx/sites-enabled/default</code>
+            <figcaption><strong>Command 15</strong>: Delete default config file</figcaption>
+          </figure>
+          <li>Test your Nginx configuration for errors with <em>Command 16</em>.</li>
+          <figure class="command">
+            <code>sudo nginx -t</code>
+            <figcaption><strong>Command 16</strong>: Test Nginx configuration</figcaption>
+          </figure>
           <p class="feedback">If there are no errors, you should see the output in <em>Listing 6</em>.</p>
-          <figure>
+          <figure class="listing">
             <code>
 nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
             </code>
-            <figcaption>Listing 6: nginx test output</figcaption>
+            <figcaption><strong>Listing 6</strong>: Output for successful Nginx test</figcaption>
           </figure>
           <p class="note">
             <strong>Note</strong>: If you do see errors, you'll have to open the previous file again and fix whatever mistakes the command output mentions.
           </p>
-          <li>Restart Nginx with the following command.</li>
-          <code>sudo systemctl restart nginx</code>
+          <li>Restart Nginx with <em>Command 17</em>.</li>
+          <figure class="command">
+            <code>sudo systemctl restart nginx</code>
+            <figcaption><strong>Command 17</strong>: Restart Nginx</figcaption>
+          </figure>
           <p class="feedback">
             There will be no output if the command runs successfully.
           </p>
@@ -536,7 +610,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
           <p class="feedback">You should see the page shown in <em>Figure 11</em>, with some differences if you made your own html earlier.</p>
           <figure>
             <img src="images/fig11_basicWebsite.png">
-            <figcaption>Figure 11: Basic custom website</figcaption>
+            <figcaption><strong>Figure 11</strong>: Basic custom website</figcaption>
           </figure>
         </ol>
       </ol>
@@ -544,38 +618,54 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
       <ol>
         <h3><li>Install Certbot.</li></h3>
         <ol>
-          <li>Run the following command to ensure the package installer <em>snapd</em> is up to date.</li>
-          <code>sudo snap install core; sudo snap refresh core</code>
+          <li>Run <em>Command 18</em> to ensure the package installer <em>snapd</em> is up to date.</li>
+          <figure class="command">
+            <code>sudo snap install core; sudo snap refresh core</code>
+            <figcaption><strong>Command 18</strong>: Update snapd</figcaption>
+          </figure>
           <p class="feedback">When the installation is done, you should see the output in <em>Listing 7</em>.</p>
-          <figure>
+          <figure class="listing">
             <code>
 core 16-2.58.3 from Canonical✓ installed
 snap "core" has no updates available
             </code>
-            <figcaption>Listing 7: snap update output</figcaption>
+            <figcaption><strong>Listing 7</strong>: Output for snap update</figcaption>
           </figure>
-          <li>Install Certbot using snapd with the following command.</li>
-          <code>sudo snap install --classic certbot</code>
+          <li>Install Certbot using snapd with <em>Command 19</em>.</li>
+          <figure class="command">
+            <code>sudo snap install --classic certbot</code>
+            <figcaption><strong>Command 19</strong>: Install Certbot</figcaption>
+          </figure>
           <p class="feedback">The output of the command should match <em>Listing 8</em>.</p>
-          <figure>
-            <code>certbot 2.4.0 from Certbot Project (certbot-eff✓) installed</code>
-            <figcaption>Listing 8: Certbot installation output</figcaption>
+          <figure class="listing">
+            <code>
+certbot 2.4.0 from Certbot Project (certbot-eff✓) installed
+            </code>
+            <figcaption><strong>Listing 8</strong>: Output for Certbot installation</figcaption>
           </figure>
-          <li>Create a symbolic link for Certbot with the following command.</li>
-          <code>sudo ln -s /snap/bin/certbot /usr/bin/certbot</code>
+          <li>Create a symbolic link for Certbot with <em>Command 20</em>.</li>
+          <figure class="command">
+            <code>sudo ln -s /snap/bin/certbot /usr/bin/certbot</code>
+            <figcaption><strong>Command 20</strong>: Create symbolic link</figcaption>
+          </figure>
         </ol>
         <h3><li>Run Certbot.</li></h3>
         <ol>
-          <li>Use the following command to run Certbot.</li>
-          <code>sudo certbot --nginx</code>
+          <li>Use <em>Command 21</em> to run Certbot.</li>
+          <figure class="command">
+            <code>sudo certbot --nginx</code>
+            <figcaption><strong>Command 21</strong>: Run Certbot</figcaption>
+          </figure>
           <li>Enter your email address when prompted.</li>
           <li>Enter <em>y</em> to agree to Certbot's terms of service.</li>
           <li>Enter either <em>y</em> for yes or <em>n</em> for no when asked whether you want to share your email with the EFF.</li>
           <li>Press enter to activate HTTPS for your domain.</li>
           <p class="feedback">Your output should look like <em>Listing 9</em></p>
-          <figure>
-            <code>Congratulations! You have successfully enabled HTTPS on https://[mydomain] and https://www.[mydomain]</code>
-            <figcaption>Listing 9: Certbot success output</figcaption>
+          <figure class="listing">
+            <code>
+Congratulations! You have successfully enabled HTTPS on https://[mydomain] and https://www.[mydomain]
+            </code>
+            <figcaption><strong>Listing 9</strong>: Certbot success output</figcaption>
           </figure>
         </ol>
         <h3><li>Test HTTPS.</li></h3>
@@ -583,10 +673,16 @@ snap "core" has no updates available
         <p class="feedback">You should see a lock symbol next to your website name indicating that the site is secure (<em>Figure 12</em>).</p>
         <figure>
           <img src="images/fig12_https.png">
-          <figcaption>Figure 12: HTTPS lock symbol</figcaption>
+          <figcaption><strong>Figure 12</strong>: HTTPS lock symbol</figcaption>
         </figure>
       </ol>
       <h2><li>Website File Upload</li></h2>
+      <div class="caution">
+        <h3>Caution</h3>
+        <p>Remember: Don't upload anything to the server that shouldn't be publicly visible. There are many avenues for security breaches, 
+          and it is best to assume that anything uploaded to the web server <em>will</em> be seen by the public.
+        </p>
+      </div>
       <p class="note">
         <strong>Note</strong>: While designing a website is outside the scope of this guide, once you do make a website you'll have to upload the 
         files to your server. There are resources linked at the end of this guide to help you design your website, and you can come back to this 
@@ -601,24 +697,36 @@ snap "core" has no updates available
           <li>Copy the directory to your clipboard.</li>
           <figure>
             <img src="images/fig13_fileDirectory.png">
-            <figcaption>Figure 13: File directory in Windows</figcaption>
+            <figcaption><strong>Figure 13</strong>: File directory in Windows</figcaption>
           </figure>
         </ol>
         <h3><li>Copy the files to the server.</li></h3>
         <ol>
-          <li>Run the following command to copy your files to the server, replacing [directory] with the directory you copied.</li>
-          <code>scp [directory] [username]@[ip-address]:~/sitefiles</code>
-          <li>Connect to your server, using the same command as before.</li>
-          <code>ssh [username]@[ip-address]</code>
-          <li>Copy the files you uploaded to your website folder with the following command.</li>
-          <code>sudo cp ~/sitefiles/* /var/www/[mydomain]/html/</code>
-          <p class="note">
-            <strong>Note</strong>: Any files already on the server with the same name as files you upload will be overwritten.
-          </p>
+          <li>Run <em>Command 22</em> to copy your files to the server, replacing [directory] with the directory you copied.</li>
+          <figure class="command">
+            <code>scp [directory] [username]@[ip-address]:~/sitefiles</code>
+            <figcaption><strong>Command 22</strong>: Copy files to server</figcaption>
+          </figure>
+          <li>Connect to your server using <em>Command 23</em> (the same as <em>Command 7</em>).</li>
+          <figure class="command">
+            <code>ssh [username]@[ip-address]</code>
+            <figcaption><strong>Command 23</strong>: Connect to server as user account via ssh</figcaption>
+          </figure>
+          <li>Copy the files you uploaded to your website folder with <em>Command 24</em>.</li>
+          <div class="caution">
+            <h3>Caution</h3>
+            <p>
+              Any files already on the server with the same name as files you upload will be overwritten.
+            </p>
+          </div>
+          <figure class="command">
+            <code>sudo cp ~/sitefiles/* /var/www/[mydomain]/html/</code>
+            <figcaption><strong>Command 24</strong>: Copy files to site directory</figcaption>
+          </figure>
           <p class="note">
             <strong>Note</strong>: The first page users see when they visit your website will always be the file titled <em>index.html</em>.
           </p>
-          <p>
+          <p class="feedback">
             You should see the changes you made when you visit your site in a web browser. If they don't appear right away, you may need to find 
             instructions on how to clear the cache of whatever browser you're using, as old versions of a site can sometimes stay cached in your 
             browser.
@@ -636,43 +744,52 @@ snap "core" has no updates available
     <h2>Maintenance Cheatsheet</h2>
     <p>Here is a list of helpful commands for server upkeep.</p>
     <ul>
-      <li>Connect to server:
-        <code>ssh [username]@[ip-address]</code>
+      <li>
+        <figure class="command">
+          <code>ssh [username]@[ip-address]</code>
+          <figcaption><strong>Command 25</strong>: Connect to server</figcaption>
+        </figure>
       </li>
-      <li>Update server:
-        <code>sudo apt update && sudo apt upgrade</code>
+      <li>
+        <figure class="command">
+          <code>sudo apt update && sudo apt upgrade</code>
+          <figcaption><strong>Command 26</strong>: Update server</figcaption>
+        </figure>
       </li>
-      <li>Upload file to website:
-        <code>scp [filename] [username]@[ip-address]:~/.</code>
+      <li>
+        <figure class="command">
+          <code>scp [filename] [username]@[ip-address]:~/.</code>
+          <figcaption><strong>Command 27</strong>: Upload files to server</figcaption>
+        </figure>
       </li>
     </ul>
     <h2>External Resources</h2>
     <ul>
-      <li><a href="https://www.w3schools.com">w3schools.com</a> - this site has extensive tutorials on how to build a website with HTML,
+      <li><a href="https://www.w3schools.com" target="_blank" rel="noopener noreferrer">w3schools.com</a> - this site has extensive tutorials on how to build a website with HTML,
         CSS, and JavaScript, as well as other general web and programmign tutorials.
       </li>
       <ul>
-        <li><a href="https://www.w3schools.com/html/">w3schools.com/html</a> - HTML tutorial.</li>
-        <li><a href="https://www.w3schools.com/css/">w3schools.com/css</a> - CSS tutorial.</li>
-        <li><a href="https://www.w3schools.com/js/">w3schools.com/js</a> - JavaScript tutorial.</li>
-        <li><a href="https://www.w3schools.com/git/">w3schools.com/git</a> - A good tool for managing versions of your website is Git - This page 
+        <li><a href="https://www.w3schools.com/html/" target="_blank" rel="noopener noreferrer">w3schools.com/html</a> - HTML tutorial.</li>
+        <li><a href="https://www.w3schools.com/css/" target="_blank" rel="noopener noreferrer">w3schools.com/css</a> - CSS tutorial.</li>
+        <li><a href="https://www.w3schools.com/js/" target="_blank" rel="noopener noreferrer">w3schools.com/js</a> - JavaScript tutorial.</li>
+        <li><a href="https://www.w3schools.com/git/" target="_blank" rel="noopener noreferrer">w3schools.com/git</a> - A good tool for managing versions of your website is Git - This page 
           provides a good tutorial on the topic.
         </li>
       </ul>
-      <li><a href="https://www.digitalocean.com/community/tutorials">digitalocean.com/community/tutorials</a> - DigitalOcean has a large library of 
+      <li><a href="https://www.digitalocean.com/community/tutorials" target="_blank" rel="noopener noreferrer">digitalocean.com/community/tutorials</a> - DigitalOcean has a large library of 
         tutorials about managing their droplets and other features. A few tutorials relevant to this guide include:
       </li>
       <ul>
         <li>
-          <a href="https://www.digitalocean.com/community/tutorial_series/getting-started-with-linux">Getting Started with Linux</a> - This page has 
+          <a href="https://www.digitalocean.com/community/tutorial_series/getting-started-with-linux" target="_blank" rel="noopener noreferrer">Getting Started with Linux</a> - This page has 
           a collection of general Linux tutorials. Developing a strong understanding of Linux will make maintaining your server much easier.
         </li>
         <li>
-          <a href="https://www.digitalocean.com/community/tutorials/how-to-keep-ubuntu-20-04-servers-updated">How to Keep Ubuntu 20.04 Servers Updated</a> - 
+          <a href="https://www.digitalocean.com/community/tutorials/how-to-keep-ubuntu-20-04-servers-updated" target="_blank" rel="noopener noreferrer">How to Keep Ubuntu 20.04 Servers Updated</a> - 
           This guide goes into depth about keeping your server updated.
         </li>
         <li>
-          <a href="https://www.digitalocean.com/community/tutorials/nginx-essentials-installation-and-configuration-troubleshooting">Nginx Essentials: Installation and Configuration Troubleshooting</a> - 
+          <a href="https://www.digitalocean.com/community/tutorials/nginx-essentials-installation-and-configuration-troubleshooting" target="_blank" rel="noopener noreferrer">Nginx Essentials: Installation and Configuration Troubleshooting</a> - 
           This guide provides a lot of information about configuring and troubleshooting Nginx.
         </li>
       </ul>

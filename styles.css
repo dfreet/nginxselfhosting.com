@@ -50,11 +50,11 @@ p {
 }
 
 a {
-    color: #1a1a1a;
+    color: #0000ff;
 }
 
 a:visited {
-    color: #1a1a1a;
+    color: #000099;
 }
 
 img {
@@ -192,6 +192,7 @@ ul.task-list li input[type="checkbox"] {
 figcaption {
     font-style: italic;
     text-align: center;
+    margin-bottom: 1em;
 }
 
 header ul {
@@ -242,7 +243,7 @@ header li {
 }
 
 code {
-    background: #f0f0f0;
+    background: #f2f2f2;
     border: 1px solid #ddd;
     border-left: 3px solid #636d93;
     color: #444;
@@ -260,4 +261,64 @@ code {
 
 li {
     margin-bottom: 0.5em;
+}
+
+.warning h3, .caution h3 {
+    margin-top: 1em;
+    margin-bottom: 0;
+}
+
+.warning p, .caution p {
+    margin-top: 0.5em;
+}
+
+.warning {
+    background: #ffbbbb;
+    border: 1px solid #ff6666;
+    padding: 0.2em 1em;
+    margin-bottom: 1em;
+}
+
+.caution {
+    background: #ffffbb;
+    border: 1px solid #dddd00;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 1em;
+    margin-bottom: 1em;
+}
+
+.note {
+    background: #eeeeff;
+    border: 1px solid #9999ff;
+    padding: 0.5em 1em;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.feedback {
+    margin-left: 2em;
+}
+
+.command {
+    margin: 0;
+    width: 100%;
+}
+
+.command code {
+    border-left: 3px solid #338833;
+    margin-bottom: 0.5em;
+}
+
+.command figcaption {
+    text-align: left;
+    margin-left: 2em;
+}
+
+.listing code {
+    background: #e7e7e7;
+    border: 1px solid #ccc;
+    border-left: 3px solid #636d93;
+    padding-top: 0;
+    padding-bottom: 0;
 }
