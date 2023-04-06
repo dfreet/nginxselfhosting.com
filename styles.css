@@ -324,6 +324,7 @@ p.feedback {
     padding-bottom: 0;
 }
 
+/*
 ol { counter-reset: item; }
 ol li { 
     display: block;
@@ -338,3 +339,4 @@ ol li::before {
 ol ul li::before {
     content: "• "
 }
+*/
